@@ -3,7 +3,7 @@ import { Suspense, useEffect, useState } from 'react';
 import { GoArrowLeft } from 'react-icons/go';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 
-const TrendMovie = () => {
+const MovieDetails = () => {
   const [imageUrl, setImageUrl] = useState('');
   const [overview, setOverview] = useState('');
   const [title, setTitle] = useState('');
@@ -103,4 +103,4 @@ const TrendMovie = () => {
     </div>
   );
 };
-export default TrendMovie;
+export default MovieDetails;
