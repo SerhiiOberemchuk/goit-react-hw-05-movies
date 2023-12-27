@@ -4,21 +4,25 @@ import { useParams } from 'react-router-dom';
 
 const Cast = () => {
   const [movieActors, setMovieActors] = useState([]);
+  const [isError, setIsError] = useState(false);
   const { id } = useParams();
   useEffect(() => {
     const movieCasts = async () => {
       try {
         const response = await getActorsDetails(id);
         setMovieActors(response.cast);
+        if (!response.cast.length) {
+          setIsError(true);
+        }
       } catch (error) {
-        alert(error);
+        setIsError(true);
       }
     };
     movieCasts();
   }, [id]);
   return (
     <div className="my-3">
-      {movieActors.length ? (
+      {movieActors.length > 0 && (
         <ul>
           {movieActors.map(({ name, id, profile_path, character }) => (
             <li key={id} className="py-3">
@@ -37,9 +41,9 @@ const Cast = () => {
             </li>
           ))}
         </ul>
-      ) : (
-        <div>We don`t have casts for this movie</div>
       )}
+
+      {isError && <div>We don`t have casts for this movie</div>}
     </div>
   );
 };

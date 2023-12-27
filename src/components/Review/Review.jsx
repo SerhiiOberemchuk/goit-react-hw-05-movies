@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 
 const Review = () => {
   const [review, setReview] = useState([]);
+  const [isError, setIsError] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -11,8 +12,11 @@ const Review = () => {
       try {
         const response = await getMovieReviews(id);
         setReview(response.results);
+        if (!response.results.length) {
+          setIsError(true);
+        }
       } catch (error) {
-        alert(error);
+        setIsError(true);
       }
     };
     reviewMovie();
@@ -20,7 +24,7 @@ const Review = () => {
 
   return (
     <div className="my-3">
-      {review.length > 0 ? (
+      {review.length > 0 && (
         <ul>
           {review.map(({ author, id, content }) => (
             <li key={id}>
@@ -29,9 +33,9 @@ const Review = () => {
             </li>
           ))}
         </ul>
-      ) : (
-        <p>We don`t have review for this movie</p>
       )}
+
+      {isError && <p>We don`t have review for this movie</p>}
     </div>
   );
 };
